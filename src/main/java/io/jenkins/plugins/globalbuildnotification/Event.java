@@ -135,7 +135,7 @@ public class Event {
 
     public JSONObject mergeFromEndpoint(Endpoint endpoint) {
         JSONObject in = toJson();
-        in.put("annotation", endpoint.getAnnotation());
+        in.put("annotation", endpoint.getRealAnnotation());
         return in;
     }
 

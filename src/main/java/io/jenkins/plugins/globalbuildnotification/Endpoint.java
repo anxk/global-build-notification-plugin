@@ -86,6 +86,10 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
         return out.toString();
     }
 
+    public Map<String, String> getRealAnnotation() {
+        return annotation;
+    }
+
     public FormValidation doCheckUrl(@QueryParameter String url) {
         if (StringUtils.isEmpty(url)) {
             return FormValidation.warning("Please specify a Url");
