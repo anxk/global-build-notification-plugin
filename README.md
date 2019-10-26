@@ -1,0 +1,1 @@
+# global-build-notification-plugin
