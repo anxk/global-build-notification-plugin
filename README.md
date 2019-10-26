@@ -1,7 +1,10 @@
 # global-build-notification-plugin
 
+This plugin adds the function to send every build event in Jenkins to HTTP Endpoint.
+
 ## Configure
 
+configuration example:
 <p align="center">
 	<img src="images/global-build-notification.png" alt="global-build-notification.png"  width=90% height=90%>
 	<p align="center">
@@ -9,6 +12,7 @@
 	</p>
 </p>
 
+message format:
 ```json
 {
     "HDuration": "2.7 sec",
