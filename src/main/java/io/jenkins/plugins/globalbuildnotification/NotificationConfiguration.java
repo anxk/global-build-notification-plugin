@@ -2,9 +2,12 @@ package io.jenkins.plugins.globalbuildnotification;
 
 import hudson.Extension;
 import jenkins.model.GlobalConfiguration;
+import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
 public class NotificationConfiguration extends GlobalConfiguration {
@@ -18,6 +21,12 @@ public class NotificationConfiguration extends GlobalConfiguration {
     public NotificationConfiguration() {
         this.endpoints = new ArrayList<Endpoint>();
         load();
+    }
+
+    @Override
+    public boolean configure(final StaplerRequest req, final JSONObject formData) {
+        setEndpoints(req.bindJSONToList(Endpoint.class, formData.get("endpoints")));
+        return false;
     }
 
     public List<Endpoint> getEndpoints() {

@@ -8,7 +8,7 @@ configuration example:
 <p align="center">
 	<img src="images/global-build-notification.png" alt="global-build-notification.png"  width=90% height=90%>
 	<p align="center">
-		<em>配置示例</em>
+		<em>example</em>
 	</p>
 </p>
 

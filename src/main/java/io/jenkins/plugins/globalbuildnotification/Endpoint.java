@@ -75,8 +75,15 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
         this.annotation = result;
     }
 
-    public Map<String, String> getAnnotation() {
-        return annotation;
+    public String getAnnotation() {
+        StringBuilder out = new StringBuilder();
+        for (Map.Entry<String, String> kv : annotation.entrySet()) {
+            out.append(kv.getKey())
+                .append("=")
+                .append(kv.getValue())
+                .append(", ");
+        }
+        return out.toString();
     }
 
     public FormValidation doCheckUrl(@QueryParameter String url) {

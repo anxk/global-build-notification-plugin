@@ -46,7 +46,7 @@ public class HttpPublisher {
             StringEntity requestEntity = new StringEntity(event.mergeFromEndpoint(endpoint).toString(), "UTF-8");
             request.setEntity(requestEntity);
             CloseableHttpResponse response = httpclient.execute(request);
-            LOGGER.log(Level.INFO, "Send notification to " + endpoint.getUrl() + response.getStatusLine());
+            LOGGER.log(Level.INFO, "Send notification to " + endpoint.getUrl() + " " + response.getStatusLine());
         } catch (UnsupportedCharsetException e) {
             LOGGER.log(Level.WARNING, "Unsupported charset", e);
         } catch (IllegalArgumentException e) {
