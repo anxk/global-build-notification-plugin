@@ -4,7 +4,7 @@ This plugin adds the function to send every build event in Jenkins to HTTP Endpo
 
 ### Configure
 
-Go to manage > configure > Global Build Notification Plugin, add a http endpoint by specify its URL, Filter (regular expression to restrict the job by full name) and annotation, for example:
+Go to manage > configure > Global Build Notification Plugin, add a http endpoint by specifying its URL, Filter (regular expression to restrict the job by full name) and annotation, for example:
 
 <p align="center">
 	<img src="images/global-build-notification.png" alt="global-build-notification.png"  width=90% height=90%>
