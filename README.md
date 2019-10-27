@@ -2,7 +2,7 @@
 
 This plugin adds the function to send every build event in Jenkins to HTTP Endpoint.
 
-## Configure
+### Configure
 
 Go to manage > configure > Global Build Notification Plugin, add a http endpoint by specify its URL, Filter (regular expression to restrict the job by full name) and annotation, for example:
 
@@ -14,7 +14,8 @@ configuration example:
 	</p>
 </p>
 
-message format:
+If you configure the plugin just as the example above, when any builds in Jenkins completed (or started), you would receive messages from the endpoint like this:
+
 ```json
 {
     "HDuration": "2.7 sec",
