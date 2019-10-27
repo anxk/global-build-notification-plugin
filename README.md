@@ -1,4 +1,4 @@
-# global-build-notification-plugin
+# Global Build Notification Plugin
 
 This plugin adds the function to send every build event in Jenkins to HTTP Endpoint.
 
