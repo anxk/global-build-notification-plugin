@@ -1,4 +1,4 @@
-# global-build-notification-plugin
+# Global Build Notification Plugin
 
 这个插件能够将Jenkins中发生的所有构建事件发送到指定的 HTTP Endpoint。
 
