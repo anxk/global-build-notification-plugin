@@ -12,13 +12,12 @@ public class GlobalBuildListener extends RunListener<Run<?, ?>> {
 
     @Override
     public void onStarted(Run<?, ?> run, TaskListener listener) {
-        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run));
+        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run, listener));
     }
 
     @Override
     public void onCompleted(Run<?, ?> run, @Nonnull TaskListener listener) {
-        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run));
+        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run, listener));
     }
 
 }
-

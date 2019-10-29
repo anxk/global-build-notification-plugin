@@ -1,13 +1,19 @@
 package io.jenkins.plugins.globalbuildnotification;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
+
 import hudson.model.Cause;
 import hudson.model.Result;
 import hudson.model.Run;
+import hudson.model.TaskListener;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -24,8 +30,9 @@ public class Event {
     private String hDuration;
     private String result;
     private String jobName;
+    private Map<String, String> envVars;
 
-    public Event(Run<?, ?> run) {
+    public Event(Run<?, ?> run, TaskListener listener) {
         setEventId();
         setTimestamp();
         setUrl(run);
@@ -34,6 +41,7 @@ public class Event {
         setDuration(run);
         setHDuration(run);
         setResult(run);
+        setEnvVars(run, listener);
     }
 
     public void setEventId() {
@@ -123,12 +131,34 @@ public class Event {
         return result;
     }
 
+    public void setEnvVars(Run<?, ?> run, @Nonnull TaskListener listener) {
+        this.envVars = new TreeMap<String, String>();
+        try {
+            this.envVars = run.getEnvironment(listener);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Cannot obtain environment variables", e);
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.WARNING, "Cannot obtain environment variables", e);
+        }
+    }
+
+    public void resetEnvVars() {
+        this.envVars = null;
+    }
+
+    public Map<String, String> getEnvVars() {
+        return envVars;
+    }
+
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         try {
             json = JSONObject.fromObject(this);
         } catch (JSONException e) {
             LOGGER.log(Level.WARNING , "Fail to covert build " + url + " to proper JSONObject");
+        }
+        if (json.get("envVars") == null) {
+            json.remove("envVars");
         }
         return json;
     }

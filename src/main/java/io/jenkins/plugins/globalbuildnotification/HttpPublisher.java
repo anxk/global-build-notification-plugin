@@ -24,6 +24,9 @@ public class HttpPublisher {
     public static void publish(List<Endpoint> endpoints, Event event) {
         for (Endpoint endpoint : endpoints) {
             if (isRegexMatch(endpoint.getRegex(), event.getJobName())) {
+                if(!endpoint.getWithEnvVars()) {
+                    event.resetEnvVars();
+                }
                 _publish(endpoint, event);
             }
         }

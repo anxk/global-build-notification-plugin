@@ -23,11 +23,13 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
     private String url;
     private String regex;
     private Map<String, String> annotation;
+    private Boolean withEnvVars;
 
     @DataBoundConstructor
-    public Endpoint(String url, String regex, String annotation) {
+    public Endpoint(String url, String regex, String annotation, Boolean withEnvVars) {
         this.url = url;
         this.regex = regex;
+        this.withEnvVars = withEnvVars;
         setAnnotation(annotation);
     }
 
@@ -88,6 +90,15 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
 
     public Map<String, String> getRealAnnotation() {
         return annotation;
+    }
+
+    @DataBoundSetter
+    public void setWithEnvVars(Boolean withEnvVars) {
+        this.withEnvVars = withEnvVars;
+    }
+
+    public Boolean getWithEnvVars() {
+        return withEnvVars;
     }
 
     public FormValidation doCheckUrl(@QueryParameter String url) {
