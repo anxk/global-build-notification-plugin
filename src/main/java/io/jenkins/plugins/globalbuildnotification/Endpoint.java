@@ -85,6 +85,7 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
                 .append(kv.getValue())
                 .append(", ");
         }
+        out.delete(out.length() - 2, out.length());
         return out.toString();
     }
 

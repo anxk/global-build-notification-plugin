@@ -1,5 +1,7 @@
 # Global Build Notification Plugin
 
+[![Build Status](https://www.travis-ci.org/anxk/global-build-notification-plugin.svg?branch=master)](https://www.travis-ci.org/anxk/global-build-notification-plugin)
+
 This plugin adds the function to send every build event in Jenkins to HTTP Endpoint.
 
 ### Configuration
