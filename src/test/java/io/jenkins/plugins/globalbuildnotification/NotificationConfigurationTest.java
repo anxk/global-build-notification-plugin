@@ -28,7 +28,10 @@ public class NotificationConfigurationTest {
     @Test
     public void uiAndStorage() {
         rr.then(r -> {
-            assertEquals("not set initially", new ArrayList<Endpoint>(), NotificationConfiguration.get().getEndpoints());
+            List<Endpoint> endpointsInit = NotificationConfiguration.get().getEndpoints();
+
+            assertEquals("endpoints should be empty initially", new ArrayList<Endpoint>(), endpointsInit);
+
             HtmlForm config = r.createWebClient().goTo("configure").getFormByName("config");
             config.getElementsByAttribute("button", "id", "yui-gen5-button").get(0).click();
             HtmlTextInput url = config.getInputByName("_.url");
@@ -40,17 +43,36 @@ public class NotificationConfigurationTest {
             annotation.setText("annotation1=test");
             withEnvVars.setChecked(true);
             r.submit(config);
-            assertEquals("The url should be http://localhost:9999/notification", "http://localhost:9999/notification", NotificationConfiguration.get().getEndpoints().get(0).getUrl());
-            assertEquals("The regex should be ^testJob$", "^testJob$", NotificationConfiguration.get().getEndpoints().get(0).getRegex());
-            assertEquals("The annonation should be annotation1=test", "annotation1=test", NotificationConfiguration.get().getEndpoints().get(0).getAnnotation());
-            assertEquals("The annonation should be true", true, NotificationConfiguration.get().getEndpoints().get(0).getWithEnvVars());
+
+            List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
+
+            assertEquals("The url should be http://localhost:9999/notification", "http://localhost:9999/notification", endpoints.get(0).getUrl());
+            assertEquals("The regex should be ^testJob$", "^testJob$", endpoints.get(0).getRegex());
+            assertEquals("The annonation should be annotation1=test", "annotation1=test", endpoints.get(0).getAnnotation());
+            assertEquals("The annonation should be true", true, endpoints.get(0).getWithEnvVars());
         });
         rr.then(r -> {
-            assertEquals("Still there after restart of Jenkins", "http://localhost:9999/notification", NotificationConfiguration.get().getEndpoints().get(0).getUrl());
-            assertEquals("Still there after restart of Jenkins", "^testJob$", NotificationConfiguration.get().getEndpoints().get(0).getRegex());
-            assertEquals("Still there after restart of Jenkins", "annotation1=test", NotificationConfiguration.get().getEndpoints().get(0).getAnnotation());
-            assertEquals("Still there after restart of Jenkins", true, NotificationConfiguration.get().getEndpoints().get(0).getWithEnvVars());
+            List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
+
+            assertEquals("Still there after restart of Jenkins", "http://localhost:9999/notification", endpoints.get(0).getUrl());
+            assertEquals("Still there after restart of Jenkins", "^testJob$", endpoints.get(0).getRegex());
+            assertEquals("Still there after restart of Jenkins", "annotation1=test", endpoints.get(0).getAnnotation());
+            assertEquals("Still there after restart of Jenkins", true, endpoints.get(0).getWithEnvVars());
         });
+    }
+
+    @Test
+    public void annonationTest() {
+        List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
+        endpoints.add(new Endpoint("", "", "", false));
+        endpoints.get(0).setAnnotation("  ");
+        assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
+        endpoints.get(0).setAnnotation(" = ");
+        assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
+        endpoints.get(0).setAnnotation(" =, ");
+        assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
+        endpoints.get(0).setAnnotation("test=value,  ");
+        assertEquals("Should be test=value", "test=value", endpoints.get(0).getAnnotation());
     }
 
 }

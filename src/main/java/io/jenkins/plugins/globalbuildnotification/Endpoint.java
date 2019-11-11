@@ -79,13 +79,16 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
 
     public String getAnnotation() {
         StringBuilder out = new StringBuilder();
+        int count = 0;
         for (Map.Entry<String, String> kv : annotation.entrySet()) {
+            count ++;
             out.append(kv.getKey())
                 .append("=")
-                .append(kv.getValue())
-                .append(", ");
+                .append(kv.getValue());
+            if (count != annotation.size()) {
+                out.append(", ");
+            }
         }
-        out.delete(out.length() - 2, out.length());
         return out.toString();
     }
 

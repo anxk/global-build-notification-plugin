@@ -2,7 +2,13 @@
 
 [![Build Status](https://www.travis-ci.org/anxk/global-build-notification-plugin.svg?branch=master)](https://www.travis-ci.org/anxk/global-build-notification-plugin)
 
-This plugin adds the function to send every build event in Jenkins to HTTP Endpoint.
+This plugin adds the function to send every build event of Jenkins to HTTP Endpoint.
+
+## Installation
+
+Clone this repo on your disk, navigate into folder `global-build-notification-plugin` and run command `mvn verify`, when it completed, upload `target/global-build-notification.hpi` to the update center of Jenkins and install it.
+
+Also you can download `global-build-notification.hpi` from [release page](https://github.com/anxk/global-build-notification-plugin/releases), then upload it to the update center of Jenkins.
 
 ### Configuration
 
