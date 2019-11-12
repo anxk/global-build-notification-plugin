@@ -1,7 +1,5 @@
 package io.jenkins.plugins.globalbuildnotification;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import hudson.Extension;
