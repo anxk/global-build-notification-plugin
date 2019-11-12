@@ -17,11 +17,11 @@ Go to manage > configure > Global Build Notification Plugin, add a http endpoint
 <p align="center">
 	<img src="images/configuration-example.png" alt="configuration-example.png"  width=90% height=90%>
 	<p align="center">
-		<em>example</em>
+		<em>Configuration Example</em>
 	</p>
 </p>
 
-If you configure the plugin just as the example above, when any builds in Jenkins completed (or started), you would receive messages from the endpoint like this:
+If you configure the plugin just as the example above, when a build in Jenkins completed (or started), you will receive messages from the endpoint like this:
 
 ```json
 {
@@ -34,8 +34,8 @@ If you configure the plugin just as the example above, when any builds in Jenkin
     "timestamp": 1572102686886,
     "url": "http://localhost:8080/jenkins/job/test/32/",
     "annotation": {
-        "region": "Shenzhen",
-        "project": "Extraordinary Projects"
+        "region": "east",
+        "project": "test"
     }
 }
 ```

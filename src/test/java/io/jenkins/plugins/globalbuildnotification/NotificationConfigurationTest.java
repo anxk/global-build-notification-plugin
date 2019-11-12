@@ -1,11 +1,8 @@
 package io.jenkins.plugins.globalbuildnotification;
 
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
-import com.gargoylesoftware.htmlunit.html.HtmlButtonInput;
 import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLButtonElement;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
