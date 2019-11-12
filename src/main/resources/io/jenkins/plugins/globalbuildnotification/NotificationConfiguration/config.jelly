@@ -15,9 +15,6 @@
                     <f:entry field="annotation" title="${%Annotation}" description="">
                         <f:textbox default=""/>
                     </f:entry>
-                    <f:entry field="withEnvVars" title="${%With EnvVars}" description="">
-                        <f:checkbox default="false"/>
-                    </f:entry>
                     <f:entry title="">
                         <div align="right">
                             <f:repeatableDeleteButton value="${%Remove Endpoint}"/>

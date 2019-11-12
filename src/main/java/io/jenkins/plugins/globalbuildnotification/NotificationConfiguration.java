@@ -26,7 +26,7 @@ public class NotificationConfiguration extends GlobalConfiguration {
     @Override
     public boolean configure(final StaplerRequest req, final JSONObject formData) {
         setEndpoints(req.bindJSONToList(Endpoint.class, formData.get("endpoints")));
-        return true;
+        return false;
     }
 
     public List<Endpoint> getEndpoints() {

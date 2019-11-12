@@ -1,6 +1,5 @@
 package io.jenkins.plugins.globalbuildnotification;
 
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
@@ -36,11 +35,9 @@ public class NotificationConfigurationTest {
             HtmlTextInput url = config.getInputByName("_.url");
             HtmlTextInput regex = config.getInputByName("_.regex");
             HtmlTextInput annotation = config.getInputByName("_.annotation");
-            HtmlCheckBoxInput withEnvVars = config.getInputByName("_.withEnvVars");
             url.setText("http://localhost:9999/notification");
             regex.setText("^testJob$");
             annotation.setText("annotation1=test");
-            withEnvVars.setChecked(true);
             r.submit(config);
 
             List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
@@ -48,7 +45,6 @@ public class NotificationConfigurationTest {
             assertEquals("The url should be http://localhost:9999/notification", "http://localhost:9999/notification", endpoints.get(0).getUrl());
             assertEquals("The regex should be ^testJob$", "^testJob$", endpoints.get(0).getRegex());
             assertEquals("The annonation should be annotation1=test", "annotation1=test", endpoints.get(0).getAnnotation());
-            assertEquals("The annonation should be true", true, endpoints.get(0).getWithEnvVars());
         });
         rr.then(r -> {
             List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
@@ -56,7 +52,6 @@ public class NotificationConfigurationTest {
             assertEquals("Still there after restart of Jenkins", "http://localhost:9999/notification", endpoints.get(0).getUrl());
             assertEquals("Still there after restart of Jenkins", "^testJob$", endpoints.get(0).getRegex());
             assertEquals("Still there after restart of Jenkins", "annotation1=test", endpoints.get(0).getAnnotation());
-            assertEquals("Still there after restart of Jenkins", true, endpoints.get(0).getWithEnvVars());
         });
     }
 
@@ -66,13 +61,15 @@ public class NotificationConfigurationTest {
             .getExtensionList(GlobalConfiguration.class)
             .get(NotificationConfiguration.class).getEndpoints();
             
-        endpoints.add(new Endpoint("", "", "", false));
+        endpoints.add(new Endpoint("", "", ""));
         endpoints.get(0).setAnnotation("  ");
         assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
         endpoints.get(0).setAnnotation(" = ");
         assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
         endpoints.get(0).setAnnotation(" =, ");
         assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
+        endpoints.get(0).setAnnotation("test=, ");
+        assertEquals("Should be test=", "test=", endpoints.get(0).getAnnotation());
         endpoints.get(0).setAnnotation("test=value,  ");
         assertEquals("Should be test=value", "test=value", endpoints.get(0).getAnnotation());
     }

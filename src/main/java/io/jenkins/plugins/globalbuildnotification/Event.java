@@ -1,6 +1,5 @@
 package io.jenkins.plugins.globalbuildnotification;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -8,12 +7,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.Nonnull;
-
 import hudson.model.Cause;
+import hudson.model.ParameterValue;
+import hudson.model.ParametersAction;
 import hudson.model.Result;
 import hudson.model.Run;
-import hudson.model.TaskListener;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -23,25 +21,25 @@ public class Event {
     private static final Logger LOGGER = Logger.getLogger(Event.class.getName());
     
     private String eventId;
+    private String eventType;
     private Long timestamp;
     private String url;
     private String causes;
     private Long duration;
-    private String hDuration;
     private String result;
     private String jobName;
-    private Map<String, String> envVars;
+    private Map<String, String> parametes;
 
-    public Event(Run<?, ?> run, TaskListener listener) {
+    public Event(Run<?, ?> run, String eventType) {
         setEventId();
+        setEventType(eventType);
         setTimestamp();
         setUrl(run);
         setCauses(run);
         setJobName(run);
         setDuration(run);
-        setHDuration(run);
         setResult(run);
-        setEnvVars(run, listener);
+        setParameters(run);
     }
 
     public void setEventId() {
@@ -50,6 +48,14 @@ public class Event {
 
     public String getEventId() {
         return eventId;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getEventType() {
+        return eventType;
     }
 
     public void setTimestamp() {
@@ -112,14 +118,6 @@ public class Event {
         return duration;
     }
 
-    public void setHDuration(Run<?, ?> run) {
-        this.hDuration = run.getDurationString();
-    }
-
-    public String getHDuration() {
-        return hDuration;
-    }
-
     public void setResult(Run<?, ?> run) {
         Result result = run.getResult();
         if (result != null) {
@@ -131,23 +129,22 @@ public class Event {
         return result;
     }
 
-    public void setEnvVars(Run<?, ?> run, @Nonnull TaskListener listener) {
-        this.envVars = new TreeMap<String, String>();
-        try {
-            this.envVars = run.getEnvironment(listener);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Cannot obtain environment variables", e);
-        } catch (InterruptedException e) {
-            LOGGER.log(Level.WARNING, "Cannot obtain environment variables", e);
+    public void setParameters(Run<?, ?> run) {
+        ParametersAction parametersAction = run.getAction(ParametersAction.class);
+        if (parametersAction != null) {
+            Map<String, String> _parameters = new TreeMap<String, String>();
+            for (ParameterValue p: parametersAction.getAllParameters()) {
+                Object value = p.getValue();
+                if (value != null) {
+                    _parameters.put(p.getName(), value.toString());
+                }
+            }
+            this.parametes = _parameters;
         }
     }
 
-    public void resetEnvVars() {
-        this.envVars = null;
-    }
-
-    public Map<String, String> getEnvVars() {
-        return envVars;
+    public Map<String, String> getParameters() {
+        return parametes;
     }
 
     public JSONObject toJson() {
@@ -157,16 +154,13 @@ public class Event {
         } catch (JSONException e) {
             LOGGER.log(Level.WARNING , "Fail to covert build " + url + " to proper JSONObject");
         }
-        if (json.get("envVars") == null) {
-            json.remove("envVars");
-        }
         return json;
     }
 
     public JSONObject mergeFromEndpoint(Endpoint endpoint) {
-        JSONObject in = toJson();
-        in.put("annotation", endpoint.getRealAnnotation());
-        return in;
+        JSONObject merged = toJson();
+        merged.put("annotation", endpoint.getRealAnnotation());
+        return merged;
     }
 
 }

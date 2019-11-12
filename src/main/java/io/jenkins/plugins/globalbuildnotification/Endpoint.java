@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import com.google.common.base.Splitter;
 
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
@@ -23,13 +24,11 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
     private String url;
     private String regex;
     private Map<String, String> annotation;
-    private Boolean withEnvVars;
 
     @DataBoundConstructor
-    public Endpoint(String url, String regex, String annotation, Boolean withEnvVars) {
+    public Endpoint(String url, String regex, String annotation) {
         this.url = url;
         this.regex = regex;
-        this.withEnvVars = withEnvVars;
         setAnnotation(annotation);
     }
 
@@ -96,35 +95,23 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
         return annotation;
     }
 
-    @DataBoundSetter
-    public void setWithEnvVars(Boolean withEnvVars) {
-        this.withEnvVars = withEnvVars;
-    }
-
-    public Boolean getWithEnvVars() {
-        return withEnvVars;
-    }
-
-    public FormValidation doCheckUrl(@QueryParameter String url) {
-        if (StringUtils.isEmpty(url)) {
-            return FormValidation.warning("Please specify a Url");
-        }
-        return FormValidation.ok();
-    }
-
-    public FormValidation doCheckRegex(@QueryParameter String regex) {
-        if (StringUtils.isEmpty(regex)) {
-            return FormValidation.warning("Please specify a regular expression");
-        }
-        return FormValidation.ok();
-    }
-
     @Extension
     public static class DescriptorImpl extends Descriptor<Endpoint> {
 
-        @Override
-        public String getDisplayName() {
-            return "";
+        public FormValidation doCheckUrl(@QueryParameter String value) {
+            if (value.startsWith("http") || value.startsWith("https")) {
+                return FormValidation.ok();
+            }
+            return FormValidation.error("Please specify a valid url");
+        }
+    
+        public FormValidation doCheckRegex(@QueryParameter String value) {
+            try {
+                Pattern.compile(value);
+                return FormValidation.ok();
+            } catch (PatternSyntaxException e) {
+                return FormValidation.error("Please specify an invalid regular expression");
+            }
         }
 
     }

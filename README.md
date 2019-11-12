@@ -2,7 +2,7 @@
 
 [![Build Status](https://www.travis-ci.org/anxk/global-build-notification-plugin.svg?branch=master)](https://www.travis-ci.org/anxk/global-build-notification-plugin)
 
-This plugin adds the function to send every build event of Jenkins to HTTP Endpoint.
+This plugin adds the function to send every build event(STARTED and COMPLETED) of Jenkins to HTTP Endpoint.
 
 ## Installation
 
@@ -25,17 +25,20 @@ If you configure the plugin just as the example above, when a build in Jenkins c
 
 ```json
 {
-    "HDuration": "2.7 sec",
-    "causes": "Started by user anonymous",
-    "duration": 2758,
-    "eventId": "f797f1d6-3b30-4c01-80bb-1d7e46ac8f24",
+    "duration": 75,
     "jobName": "test",
     "result": "SUCCESS",
-    "timestamp": 1572102686886,
-    "url": "http://localhost:8080/jenkins/job/test/32/",
+    "eventId": "810e81f7-0a09-4d10-9130-134c6db95184",
+    "causes": "Started by user admin",
+    "eventType": "completed",
+    "parameters": {
+        "param1": "xxx",
+        "param2": "yyy"
+    },
+    "url": "http://localhost:9090/job/test/5/",
+    "timestamp": 1573581381138,
     "annotation": {
-        "region": "east",
-        "project": "test"
+        "location": "east"
     }
 }
 ```

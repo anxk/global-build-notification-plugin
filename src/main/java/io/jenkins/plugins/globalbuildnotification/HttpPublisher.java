@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -16,7 +17,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-
 public class HttpPublisher {
 
     private static final Logger LOGGER = Logger.getLogger(HttpPublisher.class.getName());
@@ -24,9 +24,6 @@ public class HttpPublisher {
     public static void publish(List<Endpoint> endpoints, Event event) {
         for (Endpoint endpoint : endpoints) {
             if (isRegexMatch(endpoint.getRegex(), event.getJobName())) {
-                if(!endpoint.getWithEnvVars()) {
-                    event.resetEnvVars();
-                }
                 _publish(endpoint, event);
             }
         }
@@ -65,7 +62,12 @@ public class HttpPublisher {
         if (regex.trim().equals("")) {
             return true;
         }
-        return Pattern.matches(regex, value);
+        try {
+            return Pattern.matches(regex, value);
+        } catch (PatternSyntaxException e) {
+            LOGGER.log(Level.WARNING, "Invalid regular expression", e);
+            return false;
+        }
     }
 
 }
