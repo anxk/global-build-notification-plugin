@@ -15,7 +15,7 @@ Also you can download `global-build-notification.hpi` from [release page](https:
 Go to manage > configure > Global Build Notification Plugin, add a http endpoint by specifying its URL, Filter (regular expression to restrict the job by full name) and annotation, for example:
 
 <p align="center">
-	<img src="images/configuration-example.png" alt="configuration-example.png"  width=100% height=90%>
+	<img src="images/configuration-example.png" alt="configuration-example.png"  width=90% height=90%>
 	<p align="center">
 		<em>Configuration Example</em>
 	</p>
