@@ -14,6 +14,8 @@ import org.junit.Rule;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.RestartableJenkinsRule;
 
+import jenkins.model.GlobalConfiguration;
+
 public class NotificationConfigurationTest {
 
     @Rule
@@ -60,7 +62,10 @@ public class NotificationConfigurationTest {
 
     @Test
     public void annonationTest() {
-        List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
+        List<Endpoint> endpoints = j.getInstance()
+            .getExtensionList(GlobalConfiguration.class)
+            .get(NotificationConfiguration.class).getEndpoints();
+            
         endpoints.add(new Endpoint("", "", "", false));
         endpoints.get(0).setAnnotation("  ");
         assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());
