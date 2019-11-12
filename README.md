@@ -10,7 +10,7 @@ Clone this repo on your disk, navigate into folder `global-build-notification-pl
 
 Also you can download `global-build-notification.hpi` from [release page](https://github.com/anxk/global-build-notification-plugin/releases), then upload it to the update center of Jenkins.
 
-### Configuration
+## Configuration
 
 Go to manage > configure > Global Build Notification Plugin, add a http endpoint by specifying its URL, Filter (regular expression to restrict the job by full name) and annotation, for example:
 
