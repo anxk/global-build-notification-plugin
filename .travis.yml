@@ -6,11 +6,10 @@ jobs:
   include:
     - stage: build
       script: mvn verify
-
-deploy:
-  provider: releases
-  api_key: "${GITHUB_OAUTH_TOKEN}"
-  file_glob: true
-  file: ./target/*.hpi
-  skip_cleanup: true
-  draft: true
+      deploy:
+        provider: releases
+        api_key: "${GITHUB_OAUTH_TOKEN}"
+        file_glob: true
+        file: ./target/*.hpi
+        skip_cleanup: true
+        draft: true
