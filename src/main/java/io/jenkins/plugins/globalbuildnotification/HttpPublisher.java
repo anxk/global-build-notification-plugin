@@ -24,12 +24,12 @@ public class HttpPublisher {
     public static void publish(List<Endpoint> endpoints, Event event) {
         for (Endpoint endpoint : endpoints) {
             if (isRegexMatch(endpoint.getRegex(), event.getJobName())) {
-                _publish(endpoint, event);
+                publish(endpoint, event);
             }
         }
     }
     
-    public static void _publish(Endpoint endpoint, Event event) {
+    public static void publish(Endpoint endpoint, Event event) {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
 

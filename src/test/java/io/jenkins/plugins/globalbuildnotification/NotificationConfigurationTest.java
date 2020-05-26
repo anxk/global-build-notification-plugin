@@ -27,7 +27,6 @@ public class NotificationConfigurationTest {
     public void uiAndStorage() {
         rr.then(r -> {
             List<Endpoint> endpointsInit = NotificationConfiguration.get().getEndpoints();
-
             assertEquals("endpoints should be empty initially", new ArrayList<Endpoint>(), endpointsInit);
 
             HtmlForm config = r.createWebClient().goTo("configure").getFormByName("config");
@@ -41,14 +40,12 @@ public class NotificationConfigurationTest {
             r.submit(config);
 
             List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
-
             assertEquals("The url should be http://localhost:9999/notification", "http://localhost:9999/notification", endpoints.get(0).getUrl());
             assertEquals("The regex should be ^testJob$", "^testJob$", endpoints.get(0).getRegex());
             assertEquals("The annonation should be annotation1=test", "annotation1=test", endpoints.get(0).getAnnotation());
         });
         rr.then(r -> {
             List<Endpoint> endpoints = NotificationConfiguration.get().getEndpoints();
-
             assertEquals("Still there after restart of Jenkins", "http://localhost:9999/notification", endpoints.get(0).getUrl());
             assertEquals("Still there after restart of Jenkins", "^testJob$", endpoints.get(0).getRegex());
             assertEquals("Still there after restart of Jenkins", "annotation1=test", endpoints.get(0).getAnnotation());
@@ -56,11 +53,10 @@ public class NotificationConfigurationTest {
     }
 
     @Test
-    public void annonationTest() {
+    public void annotationTest() {
         List<Endpoint> endpoints = j.getInstance()
             .getExtensionList(GlobalConfiguration.class)
             .get(NotificationConfiguration.class).getEndpoints();
-            
         endpoints.add(new Endpoint("", "", ""));
         endpoints.get(0).setAnnotation("  ");
         assertEquals("Should be empty", "", endpoints.get(0).getAnnotation());

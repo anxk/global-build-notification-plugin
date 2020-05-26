@@ -19,6 +19,9 @@ import net.sf.json.JSONObject;
 public class Event {
 
     private static final Logger LOGGER = Logger.getLogger(Event.class.getName());
+
+    protected static final String STARTED = "started";
+    protected static final String COMPLETED = "completed";
     
     private String eventId;
     private String eventType;
@@ -28,12 +31,12 @@ public class Event {
     private Long duration;
     private String result;
     private String jobName;
-    private Map<String, String> parametes;
+    private Map<String, String> parameters;
 
     public Event(Run<?, ?> run, String eventType) {
         setEventId();
         setEventType(eventType);
-        setTimestamp();
+        setTimestamp(eventType, run);
         setUrl(run);
         setCauses(run);
         setJobName(run);
@@ -58,8 +61,12 @@ public class Event {
         return eventType;
     }
 
-    public void setTimestamp() {
-        this.timestamp = System.currentTimeMillis();
+    public void setTimestamp(String eventType, Run<?, ?> run) {
+        if (eventType.equals(STARTED)) {
+            this.timestamp = run.getStartTimeInMillis();
+        } else {
+            this.timestamp = System.currentTimeMillis();
+        }
     }
 
     public Long getTimestamp() {
@@ -139,12 +146,12 @@ public class Event {
                     _parameters.put(p.getName(), value.toString());
                 }
             }
-            this.parametes = _parameters;
+            this.parameters = _parameters;
         }
     }
 
     public Map<String, String> getParameters() {
-        return parametes;
+        return parameters;
     }
 
     public JSONObject toJson() {

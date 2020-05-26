@@ -10,17 +10,18 @@ import hudson.model.listeners.RunListener;
 @Extension
 public class GlobalBuildListener extends RunListener<Run<?, ?>> {
 
-    public static final String STARTED = "started";
-    public static final String COMPLETED = "completed";
-
     @Override
     public void onStarted(Run<?, ?> run, TaskListener listener) {
-        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run, STARTED));
+        publish(run, Event.STARTED);
     }
 
     @Override
     public void onCompleted(Run<?, ?> run, @Nonnull TaskListener listener) {
-        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run, COMPLETED));
+        publish(run, Event.COMPLETED);
+    }
+
+    public void publish(Run<?, ?> run, String eventType) {
+        HttpPublisher.publish(NotificationConfiguration.get().getEndpoints(), new Event(run, eventType));
     }
 
 }

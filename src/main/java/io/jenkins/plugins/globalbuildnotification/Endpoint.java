@@ -1,10 +1,6 @@
 package io.jenkins.plugins.globalbuildnotification;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -53,17 +49,11 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
     @DataBoundSetter
     public void setAnnotation(String annotation) {
         Map<String, String> result = new HashMap<String, String>();
-        Iterator<String> iter = Splitter.on(",")
-            .omitEmptyStrings()
-            .trimResults()
-            .split(annotation)
-            .iterator();
+        Iterator<String> iter = Splitter.on(",").omitEmptyStrings().trimResults().split(annotation).iterator();
         while (iter.hasNext()) {
             String str = iter.next();
             List<String> kv = new ArrayList<String>();
-            for (String var : str.split("=")) {
-                kv.add(var);
-            }
+            Collections.addAll(kv, str.split("="));
             if (kv.size() == 0) {
                 continue;
             } else if (kv.size() == 1) {
@@ -81,9 +71,7 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
         int count = 0;
         for (Map.Entry<String, String> kv : annotation.entrySet()) {
             count ++;
-            out.append(kv.getKey())
-                .append("=")
-                .append(kv.getValue());
+            out.append(kv.getKey()).append("=").append(kv.getValue());
             if (count != annotation.size()) {
                 out.append(", ");
             }
@@ -110,10 +98,9 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
                 Pattern.compile(value);
                 return FormValidation.ok();
             } catch (PatternSyntaxException e) {
-                return FormValidation.error("Please specify an invalid regular expression");
+                return FormValidation.error("Please specify a valid regular expression");
             }
         }
-
     }
 
 }

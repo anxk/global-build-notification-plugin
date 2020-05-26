@@ -9,7 +9,7 @@
     </parent>
     <groupId>io.jenkins.plugins</groupId>
     <artifactId>global-build-notification</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>hpi</packaging>
     <properties>
         <jenkins.version>2.138.4</jenkins.version>
